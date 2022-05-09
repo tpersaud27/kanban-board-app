@@ -1,71 +1,86 @@
 <mat-toolbar color="primary">
   <mat-icon>local_fire_department</mat-icon>
-  <span> Kanban Firebase Application</span>
+  <span> Kanban Board Application</span>
 </mat-toolbar>
 
-<!-- This will contain all three lanes for the board -->
-<div class="container-wrapper">
-  <!-- This will contain the backlog items -->
-  <div class="container">
-    <h2>Backlog</h2>
-    <mat-card
-      cdkDropList
-      id="todo"
-      #todoList="cdkDropList"
-      [cdkDropListData]="todo"
-      [cdkDropListConnectedTo]="[doneList, inProgressList]"
-      (cdkDropListDropped)="drop($event)"
-      class="list"
-    >
-      <p class="empty-label" *ngIf="todo.length === 0">Empty list</p>
-      <app-task
-        (edit)="editTask('todo', $event)"
-        *ngFor="let task of todo"
-        cdkDrag
-        [task]="task"
-      ></app-task>
-    </mat-card>
-  </div>
-  <!-- This will contain the in progress items -->
-  <div class="container">
-    <h2>In progress</h2>
-    <mat-card
-      cdkDropList
-      id="inProgress"
-      #inProgressList="cdkDropList"
-      [cdkDropListData]="inProgress"
-      [cdkDropListConnectedTo]="[todoList, doneList]"
-      (cdkDropListDropped)="drop($event)"
-      class="list"
-    >
-      <p class="empty-label" *ngIf="inProgress.length === 0">Empty list</p>
-      <app-task
-        (edit)="editTask('inProgress', $event)"
-        *ngFor="let task of inProgress"
-        cdkDrag
-        [task]="task"
-      ></app-task>
-    </mat-card>
-  </div>
-  <!-- This will contain the done items -->
-  <div class="container">
-    <h2>Done</h2>
-    <mat-card
-      cdkDropList
-      id="done"
-      #doneList="cdkDropList"
-      [cdkDropListData]="done"
-      [cdkDropListConnectedTo]="[todoList, inProgressList]"
-      (cdkDropListDropped)="drop($event)"
-      class="list"
-    >
-      <p class="empty-label" *ngIf="done.length === 0">Empty list</p>
-      <app-task
-        (edit)="editTask('done', $event)"
-        *ngFor="let task of done"
-        cdkDrag
-        [task]="task"
-      ></app-task>
-    </mat-card>
+<div class="content-wrapper">
+  <button (click)="newTask()" mat-button>
+    <mat-icon>add</mat-icon> Add Task
+  </button>
+
+  <!-- This will contain all three lanes for the board -->
+  <div class="container-wrapper">
+    <!-- This will contain the backlog items -->
+    <div class="container">
+      <h2>Backlog</h2>
+      <!-- cdkDropList allows us to drop tasks inside of an element -->
+      <!-- cdKDropListData is the data array. This will be the list of todos -->
+      <!-- cdkDropListConnectedTo specifies the other lists we can drop things into -->
+      <!-- cdkDropListDropped handles the event that is emitted by cdkDropList by invoking the drop method and pass the current event as an argument -->
+      <mat-card
+        cdkDropList
+        id="todo"
+        #todoList="cdkDropList"
+        [cdkDropListData]="todo"
+        [cdkDropListConnectedTo]="[doneList, inProgressList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list"
+      >
+        <!-- If the list is empty display empty -->
+        <p class="empty-label" *ngIf="todo.length === 0">Empty list</p>
+        <!-- We handle the edit output calling editTask with the name of the list and the $event object -->
+        <!-- This helps us replace the edited task from the correct list -->
+        <app-task
+          (edit)="editTask('todo', $event)"
+          *ngFor="let task of todo"
+          cdkDrag
+          [task]="task"
+        ></app-task>
+      </mat-card>
+    </div>
+
+    <!-- This will contain the in progress items -->
+    <div class="container">
+      <h2>In progress</h2>
+      <mat-card
+        cdkDropList
+        id="inProgress"
+        #inProgressList="cdkDropList"
+        [cdkDropListData]="inProgress"
+        [cdkDropListConnectedTo]="[todoList, doneList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list"
+      >
+        <p class="empty-label" *ngIf="inProgress.length === 0">Empty list</p>
+        <app-task
+          (edit)="editTask('inProgress', $event)"
+          *ngFor="let task of inProgress"
+          cdkDrag
+          [task]="task"
+        ></app-task>
+      </mat-card>
+    </div>
+
+    <!-- This will contain the done items -->
+    <div class="container">
+      <h2>Done</h2>
+      <mat-card
+        cdkDropList
+        id="done"
+        #doneList="cdkDropList"
+        [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[todoList, inProgressList]"
+        (cdkDropListDropped)="drop($event)"
+        class="list"
+      >
+        <p class="empty-label" *ngIf="done.length === 0">Empty list</p>
+        <app-task
+          (edit)="editTask('done', $event)"
+          *ngFor="let task of done"
+          cdkDrag
+          [task]="task"
+        ></app-task>
+      </mat-card>
+    </div>
   </div>
 </div>
